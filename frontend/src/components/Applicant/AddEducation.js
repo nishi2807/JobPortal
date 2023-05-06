@@ -3,6 +3,7 @@ import axios from 'axios';
 import Card from "react-bootstrap/Card";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import './AddEducation.css';
 
 class AddEducation extends Component {
     onLogoutClick = e => {
@@ -89,7 +90,9 @@ class AddEducation extends Component {
         if(userRole === 'applicant') {
             AddEducation = 
             <form noValidate onSubmit={this.onSubmit}>
-                <div className="input-field col s12">
+                <div className="main-main-container">
+                    <div className="ms-blur-con">
+                <div className="main-subheading">
                     <label htmlFor="school">School</label><br></br>
                     <input
                         onChange={this.onChange}
@@ -98,7 +101,7 @@ class AddEducation extends Component {
                         type="text"
                     />
                 </div>
-                <div className="input-field col s12">
+                <div className="main-subheading">
                     <label htmlFor="degree">Degree</label><br></br>
                     <input
                         onChange={this.onChange}
@@ -107,7 +110,7 @@ class AddEducation extends Component {
                         type="text"
                     />
                 </div>
-                <div className="input-field col s12">
+                <div className="main-subheading">
                     <label htmlFor="startdate">Start Date</label><br></br>
                     <input
                         onChange={this.onChange}
@@ -116,7 +119,7 @@ class AddEducation extends Component {
                         type="date"
                     />
                 </div>
-                <div className="input-field col s12">
+                <div className="main-subheading">
                     <label htmlFor="enddate">End Date</label><br></br>
                     <input
                         onChange={this.onChange}
@@ -126,18 +129,12 @@ class AddEducation extends Component {
                     />
                 </div>
                 <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                    <button
-                        style={{
-                        width: "150px",
-                        borderRadius: "3px",
-                        letterSpacing: "1.5px",
-                        marginTop: "1rem"
-                        }}
-                        type="submit"
-                        className="btn btn-primary btn-large waves-effect waves-light hoverable blue accent-3"
+                    <button type="submit" className="login-btn"
                     >
                         Save
                     </button>
+                    </div>
+                </div>
                 </div>
             </form>
         }

@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import './EditProfile.css';
 
 class EditProfile extends Component {
     onLogoutClick = e => {
@@ -14,7 +15,7 @@ class EditProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userdetails: [], 
+            userdetails: [],
             jobs: [],
             name: "",
             email: "",
@@ -33,28 +34,28 @@ class EditProfile extends Component {
 
     componentDidMount() {
         const { user } = this.props.auth;
-        axios.get('http://localhost:4000/user/'+ user.id)
-             .then(response => {
+        axios.get('http://localhost:4000/user/' + user.id)
+            .then(response => {
                 this.setState(
-                {
-                    name: response.data.name,
-                    email: response.data.email,
-                    password: response.data.password,
-                    role: response.data.role,
-                    phone_number: response.data.phone_number,
-                    bio: response.data.bio,
-                    resume: response.data.resume,
-                    skills: response.data.skills
-                });
-             })
-             .catch(function(error) {
-                 console.log(error);
-             })
+                    {
+                        name: response.data.name,
+                        email: response.data.email,
+                        password: response.data.password,
+                        role: response.data.role,
+                        phone_number: response.data.phone_number,
+                        bio: response.data.bio,
+                        resume: response.data.resume,
+                        skills: response.data.skills
+                    });
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
         axios.get('http://localhost:4000/job/get_jobs')
             .then(response => {
-                this.setState({jobs: response.data});
+                this.setState({ jobs: response.data });
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.log(error);
             })
     }
@@ -64,31 +65,29 @@ class EditProfile extends Component {
         let nameError = "";
         let emailError = "";
         let bioError = "";
-    
+
         if (!this.state.name) {
-          nameError = "Name cannot be blank";
-        }
-    
-        if (!this.state.email.includes("@")) {
-          emailError = "Invalid email";
-        }
-    
-        if (emailError || nameError) {
-          this.setState({ emailError, nameError });
-          return false;
+            nameError = "Name cannot be blank";
         }
 
-        if(user.role === "recruiter")
-        {
+        if (!this.state.email.includes("@")) {
+            emailError = "Invalid email";
+        }
+
+        if (emailError || nameError) {
+            this.setState({ emailError, nameError });
+            return false;
+        }
+
+        if (user.role === "recruiter") {
             let num = this.state.bio.split(' ').length;
-            if(num > 250)
-            {
+            if (num > 250) {
                 bioError = "Bio cannot have more than 250 words.";
                 this.setState({ bioError });
                 return false;
             }
         }
-    
+
         return true;
     };
 
@@ -99,7 +98,7 @@ class EditProfile extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
             this.setState({
-            errors: nextProps.errors
+                errors: nextProps.errors
             });
         }
     }
@@ -125,13 +124,12 @@ class EditProfile extends Component {
             axios
                 .put('http://localhost:4000/user/edit_profile/' + user.id, editedUser)
                 .then(response => {
-                    console.log(editedUser);this.props.history.push('/profile');
+                    console.log(editedUser); this.props.history.push('/profile');
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.log(error);
                 })
-            this.state.jobs.filter(item => item.recruiter === user.id).forEach((jobb) => 
-            {
+            this.state.jobs.filter(item => item.recruiter === user.id).forEach((jobb) => {
                 const editJob = {
                     recruiterName: euser.name,
                     recruiterEmail: euser.email
@@ -141,7 +139,7 @@ class EditProfile extends Component {
                     .then(response => {
                         console.log(editJob);
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         console.log(error);
                     })
             })
@@ -153,121 +151,120 @@ class EditProfile extends Component {
         const userRole = user.role;
         user.skillsstring = user.skills.toString()
         let EditUserDetails;
-        if(userRole === 'applicant') {
-            EditUserDetails = 
-            <form noValidate onSubmit={this.onSubmit}>
-                <div className="input-field col s12">
-                    <label htmlFor="name">Name</label><br></br>
-                    <input
-                        onChange={this.onChange}
-                        value={user.name}
-                        id="name"
-                        type="text"
-                    />
-                    <div style={{ fontSize: 12, color: "red" }}>
-                        {this.state.nameError}
+        if (userRole === 'applicant') {
+            EditUserDetails =
+                <form noValidate onSubmit={this.onSubmit}>
+                    <div className="main-main-container">
+                        <div className="ms-blur-con">
+
+                            <div className="main-subheading">
+                                <label htmlFor="name">Name</label><br></br>
+                                <input
+                                    onChange={this.onChange}
+                                    value={user.name}
+                                    id="name"
+                                    type="text"
+                                />
+                                <div className="ms-display-name">
+                                    {this.state.nameError}
+                                </div>
+                            </div>
+
+                            <div className="main-subheading">
+                                <label htmlFor="email">Email</label><br></br>
+                                <input
+                                    onChange={this.onChange}
+                                    value={user.email}
+                                    id="email"
+                                    type="email"
+                                />
+                                <div style={{ fontSize: 12, color: "red" }}>
+                                    {this.state.emailError}
+                                </div>
+                            </div>
+                            <div className="main-subheading">
+                                <label htmlFor="skills">Skills</label><br></br>
+                                <input
+                                    onChange={this.onChange}
+                                    value={user.skillsstring}
+                                    id="skills"
+                                    type="text"
+                                />
+                            </div>
+
+                            <div className="login-bottom-con" >
+                                <button type="submit" name="save" className="login-btn">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className="input-field col s12">
-                    <label htmlFor="email">Email</label><br></br>
-                    <input
-                        onChange={this.onChange}
-                        value={user.email}
-                        id="email"
-                        type="email"
-                    />
-                    <div style={{ fontSize: 12, color: "red" }}>
-                        {this.state.emailError}
-                    </div>
-                </div>
-                <div className="input-field col s12">
-                    <label htmlFor="skills">Skills</label><br></br>
-                    <input
-                        onChange={this.onChange}
-                        value={user.skillsstring}
-                        id="skills"
-                        type="text"
-                    />
-                </div>
-                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                    <button
-                        style={{
-                        width: "150px",
-                        borderRadius: "3px",
-                        letterSpacing: "1.5px",
-                        marginTop: "1rem"
-                        }}
-                        type="submit"
-                        className="btn btn-primary btn-large waves-effect waves-light hoverable blue accent-3"
-                    >
-                        Save
-                    </button>
-                </div>
-            </form>
+
+                </form>
         }
-        else if(userRole === 'recruiter') {
-            EditUserDetails = 
-            <form noValidate onSubmit={this.onSubmit}>
-                <div className="input-field col s12">
-                    <label htmlFor="name">Name</label><br></br>
-                    <input
-                        onChange={this.onChange}
-                        value={user.name}
-                        id="name"
-                        type="text"
-                    />
-                    <div style={{ fontSize: 12, color: "red" }}>
-                        {this.state.nameError}
+        else if (userRole === 'recruiter') {
+            EditUserDetails =
+                <form noValidate onSubmit={this.onSubmit}>
+                    <div className="input-field col s12">
+                        <label htmlFor="name">Name</label><br></br>
+                        <input
+                            onChange={this.onChange}
+                            value={user.name}
+                            id="name"
+                            type="text"
+                        />
+                        <div style={{ fontSize: 12, color: "red" }}>
+                            {this.state.nameError}
+                        </div>
                     </div>
-                </div>
-                <div className="input-field col s12">
-                    <label htmlFor="bio">Bio.</label><br></br>
-                    <input
-                        onChange={this.onChange}
-                        value={user.bio}
-                        id="bio"
-                        type="text"
-                    />
-                    <div style={{ fontSize: 12, color: "red" }}>
-                        {this.state.bioError}
+                    <div className="input-field col s12">
+                        <label htmlFor="bio">Bio.</label><br></br>
+                        <input
+                            onChange={this.onChange}
+                            value={user.bio}
+                            id="bio"
+                            type="text"
+                        />
+                        <div style={{ fontSize: 12, color: "red" }}>
+                            {this.state.bioError}
+                        </div>
                     </div>
-                </div>
-                <div className="input-field col s12">
-                    <label htmlFor="phone_number">Phone no.</label><br></br>
-                    <input
-                        onChange={this.onChange}
-                        value={user.phone_number}
-                        id="phone_number"
-                        type="number"
-                    />
-                </div>
-                <div className="input-field col s12">
-                    <label htmlFor="email">Email</label><br></br>
-                    <input
-                        onChange={this.onChange}
-                        value={user.email}
-                        id="email"
-                        type="email"
-                    />
-                    <div style={{ fontSize: 12, color: "red" }}>
-                        {this.state.emailError}
+                    <div className="input-field col s12">
+                        <label htmlFor="phone_number">Phone no.</label><br></br>
+                        <input
+                            onChange={this.onChange}
+                            value={user.phone_number}
+                            id="phone_number"
+                            type="number"
+                        />
                     </div>
-                </div>
-                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                    <button
-                        style={{
-                        width: "150px",
-                        borderRadius: "3px",
-                        letterSpacing: "1.5px",
-                        marginTop: "1rem"
-                        }}
-                        type="submit"
-                        className="btn btn-primary btn-large waves-effect waves-light hoverable blue accent-3"
-                    >
-                        Save
-                    </button>
-                </div>
-            </form>
+                    <div className="input-field col s12">
+                        <label htmlFor="email">Email</label><br></br>
+                        <input
+                            onChange={this.onChange}
+                            value={user.email}
+                            id="email"
+                            type="email"
+                        />
+                        <div style={{ fontSize: 12, color: "red" }}>
+                            {this.state.emailError}
+                        </div>
+                    </div>
+                    <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+                        <button
+                            style={{
+                                width: "150px",
+                                borderRadius: "3px",
+                                letterSpacing: "1.5px",
+                                marginTop: "1rem"
+                            }}
+                            type="submit"
+                            className="btn btn-primary btn-large waves-effect waves-light hoverable blue accent-3"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </form>
         }
         return (
             <div style={{ height: "75vh" }} className="valign-wrapper">

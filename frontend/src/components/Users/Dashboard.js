@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Card from "react-bootstrap/Card";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import './Dashboard.css'
 
 class Dashboard extends Component {
     constructor(props) {
@@ -46,49 +47,40 @@ class Dashboard extends Component {
         {
             UserOptions = 
             <ul>
+                
                 <li><a href="/profile">My Profile</a></li>
                 <li><a href="/addJob">Add Job</a></li>
                 <li><a href="/viewMyActiveJobs">My Job Listings</a></li>
                 <li><a href="/employees">Employees</a></li>
+                
             </ul>
         }
         return (
-            <div style={{ height: "75vh" }} className="container valign-wrapper">
-                <div className="row">
-                    <div className="col s12 center-align">
-                        
-                        <h6>
-                            
-                        </h6>
-                        <Card style={{ width: '100%' }}>
-                            <Card.Header>
-                                <h4>
-                                    <b>Hey {user.name.split(" ")[0]} !</b>
-                                </h4>
-                            </Card.Header>
+            <div className="ms-con">
+                <div className="ms-blur-con">
+                    <div className="ms-welcome">
+                        <div className="ms-display-name">
+                                    {user.name.split(" ")[0]} 
+                            </div>
                             <Card.Body>
                                 <Card.Title>
-                                    <p className="flow-text grey-text text-darken-1">
-                                    You are logged into the full-stack MERN app{" "}
-                                    <span style={{ fontFamily: "monospace" }}><b>JobsPlanet</b></span>
+                                    <p className="main-subheading">
+                                    You are logged into {" "}
+                                    <span><b>JobsPlanet</b></span>
                                     </p>
                                 </Card.Title>
                                 <Card.Text>
+                                    
                                     {UserOptions}
+                                    
                                 </Card.Text>
                             </Card.Body>
-                        </Card>
+                        
                         
                         <br></br>
                         <button
-                            style={{
-                            width: "150px",
-                            borderRadius: "3px",
-                            letterSpacing: "1.5px",
-                            marginTop: "1rem"
-                            }}
                             onClick={this.onLogoutClick}
-                            className="btn btn-primary btn-large waves-effect waves-light hoverable blue accent-3"
+                            className="login-btn"
                         >
                             Logout
                         </button>
